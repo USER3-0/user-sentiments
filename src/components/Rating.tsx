@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import BASE_COLORS from "../assets/colors";
 
 type Props = { max: number };
 const Rating: React.FC<Props> = (props: Props) => {
@@ -46,7 +47,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #f7f8f9;
+  background-color: ${BASE_COLORS.LIGHT_GREY};
   border-radius: 10px;
 
   & > #user_rating_title {
@@ -57,7 +58,7 @@ const Wrapper = styled.div`
 
   & > #user_ratings_wrapper {
     border-radius: 6px;
-    border: 1px solid #000000;
+    border: 1px solid ${BASE_COLORS.BLACK};
     width: 379.9px;
     height: 64px;
     display: flex;
@@ -89,6 +90,6 @@ const ItemWrapper = styled.span`
   justify-content: center;
 
   &.selected {
-    background-color: #8080808f;
+    background-color: ${BASE_COLORS.MEDIUM_DARK_GREY};
   }
 `;
