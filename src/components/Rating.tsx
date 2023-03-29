@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 type Props = { max: number };
@@ -5,13 +6,20 @@ const Rating: React.FC<Props> = (props: Props) => {
   const { max } = props;
   const arr = Array.from(Array(max).keys());
 
+  const [selectedRate, setSelectedRate] = useState<number>();
+
   return (
     <Wrapper>
       <p id="user_rating_title">Rate your experinece</p>
       <div className="ratingsWrapper" id="user_ratings_wrapper">
         {arr.map((num: number) => {
           return (
-            <ItemWrapper key={`satisfactionRate_${num}`} tabIndex={1}>
+            <ItemWrapper
+              className={selectedRate === num ? "selected" : ""}
+              key={`satisfactionRate_${num}`}
+              tabIndex={1}
+              onClick={() => setSelectedRate(num)}
+            >
               {num + 1}
             </ItemWrapper>
           );
@@ -75,4 +83,12 @@ const ItemWrapper = styled.span`
   cursor: pointer;
   flex: 1;
   text-align: center;
+  display: inline-flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+
+  &.selected {
+    background-color: #8080808f;
+  }
 `;
