@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Questionnaire from "./components/Questionnaire";
 import Rating from "./components/Rating";
 import SubmissionFeedBack from "./components/SubmissionFeedback";
 
@@ -8,7 +9,8 @@ function App() {
   return (
     <div className="App">
       {/* <Rating max={6} /> */}
-      <SubmissionFeedBack />
+      {/* <SubmissionFeedBack /> */}
+      <Questionnaire />
     </div>
   );
 }
