@@ -1,13 +1,20 @@
 import styled from "styled-components";
 import { ReactComponent as SmileICon } from "../assets/icons/smile.svg";
 import BASE_COLORS from "../assets/colors";
+import { UiProps } from "../App";
+import { SUBMISSION_FEEDBACK } from "../assets/constants";
 
-type Props = {};
+type Props = UiProps & {};
 const SubmissionFeedBack: React.FC<Props> = (props: Props) => {
+  const { isShowing } = props;
+
+  if (!isShowing) {
+    return null;
+  }
   return (
     <Wrapper>
       <SmileICon />
-      <p>Thank you! Tell us more.</p>
+      <p>{SUBMISSION_FEEDBACK.THANK_YOU}</p>
     </Wrapper>
   );
 };

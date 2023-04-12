@@ -1,9 +1,12 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import styled from "styled-components";
 import BASE_COLORS from "../assets/colors";
+import { UiProps } from "../App";
+import { QUETIONNAIRE, SUBMIT } from "../assets/constants";
 
-type Props = {};
+type Props = UiProps & {};
 const Questionnaire: React.FC<Props> = (props: Props) => {
+  const { isShowing, onChangeStep } = props;
   const [likeContentValue, setContentLikeValue] = useState<string>("");
   const [leastlikeContentValue, setLeastContentLikeValue] =
     useState<string>("");
@@ -32,24 +35,41 @@ const Questionnaire: React.FC<Props> = (props: Props) => {
 
   const handleSumbit = async (e: FormEvent) => {
     e.preventDefault();
-    // console.log({ likeContentValue, leastlikeContentValue, email });
+    console.log({ likeContentValue, leastlikeContentValue, email });
 
     if (!checkValueIsEmpty([likeContentValue, leastlikeContentValue, email])) {
       console.log("nothing to send");
       return;
     }
+
+    onChangeStep({
+      stepTo: "feedback",
+      stepFrom: "questionnaire",
+      delay: 1000,
+    });
+
+    // reset the value
+    setContentLikeValue("");
+    setLeastContentLikeValue("");
+    setEmail("");
   };
+
+  if (!isShowing) {
+    return null;
+  }
 
   return (
     <Wrapper>
-      <HeaderWapper id="user_questionnaire_header">Tell us more</HeaderWapper>
+      <HeaderWapper id="user_questionnaire_header">
+        {QUETIONNAIRE.TELL_US_MORE}
+      </HeaderWapper>
       <BodyWrapper onSubmit={handleSumbit}>
         <div>
           <label className="questionnaireSubTitle">
-            What did you like most?
+            {QUETIONNAIRE.MOST_LIKED}
             <textarea
               id="user_questionnaire_like_textarea"
-              placeholder="Tell us your experience (optional)"
+              placeholder={QUETIONNAIRE.MOST_LIKED_PLACEHOLDER}
               onChange={handleInputValueChange}
               value={likeContentValue}
             />
@@ -57,10 +77,10 @@ const Questionnaire: React.FC<Props> = (props: Props) => {
         </div>
         <div>
           <label className="questionnaireSubTitle">
-            What did you like least?
+            {QUETIONNAIRE.LEAST_LIKED}
             <textarea
               id="user_questionnaire_least_like_textarea"
-              placeholder="Tell us know how we can improve (optional)"
+              placeholder={QUETIONNAIRE.LEAST_LIKED_PLACEHOLDER}
               onChange={handleInputValueChange}
               value={leastlikeContentValue}
             />
@@ -68,18 +88,18 @@ const Questionnaire: React.FC<Props> = (props: Props) => {
         </div>
         <div>
           <label className="questionnaireSubTitle">
-            Your email
+            {QUETIONNAIRE.EMAIL}
             <input
               type="email"
               name=""
               id="user_questionnaire_email"
-              placeholder="Your email address (optional)"
+              placeholder={QUETIONNAIRE.EMAIL_PLACEHOLDER}
               onChange={handleInputValueChange}
               value={email}
             />
           </label>
         </div>
-        <ButtonWrapper>SUBMIT</ButtonWrapper>
+        <ButtonWrapper>{SUBMIT}</ButtonWrapper>
       </BodyWrapper>
     </Wrapper>
   );
@@ -91,9 +111,11 @@ const Wrapper = styled.div`
   position: fixed;
   bottom: 16px;
   right: 16px;
-  width: 420px;
-  height: 600px;
+  width: 420px !important;
+  height: 600px !important;
   background-color: ${BASE_COLORS.LIGHT_GREY};
+  max-width: 35vw;
+  max-height: 100vh;
 `;
 
 const HeaderWapper = styled.div`
@@ -102,7 +124,7 @@ const HeaderWapper = styled.div`
   font-weight: 700;
   font-size: 20px;
   line-height: 30px;
-  width: 420px;
+  width: 100%;
   height: 70px;
   border-radius: 10px 10px 0px 0px;
   display: inline-flex;
@@ -113,7 +135,6 @@ const HeaderWapper = styled.div`
 const BodyWrapper = styled.form`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   padding: 30px;
 
   > div:not(:first-of-type) {
